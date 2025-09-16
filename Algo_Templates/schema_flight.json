@@ -1,0 +1,13 @@
+{
+  "flights": [
+    {
+      "flight_id": "AI202",
+      "waypoints": [
+        { "id": "W1", "lat": 40.6413, "lon": -73.7781, "alt_ft": 30000 },
+        { "id": "W2", "lat": 41.9773, "lon": -87.9080, "alt_ft": 30000 }
+      ],
+      "speed_kts": 450,
+      "depart_time": "2025-09-06T10:00:00Z"
+    }
+  ]
+}
