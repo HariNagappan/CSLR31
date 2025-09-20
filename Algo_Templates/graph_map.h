@@ -5,6 +5,9 @@
 * accessed and modified using string-based keys instead of integer indices.
 * It also includes a main function to demonstrate its usage.
 ***************************************************************************************************/
+#ifndef GRAPH_MAP_CPP // Include guard
+#define GRAPH_MAP_CPP
+
 #include <Eigen/Dense>
 #include <unordered_map>
 #include <string>
@@ -16,7 +19,8 @@
 * This class encapsulates an Eigen matrix and a hash map to associate keys
 * with specific (row, col) coordinates within the matrix.
 ***************************************************************************************************/
-class KeyedMatrix {
+class KeyedMatrix 
+{
 private:
     Eigen::MatrixXd mat;
     std::unordered_map<std::string, std::pair<int,int>> keyToIndex;
@@ -30,7 +34,8 @@ public:
     * cols - The number of columns for the matrix.
     * Outputs:        None.
     ***********************************************************************************************/
-    KeyedMatrix(int rows, int cols) : mat(rows, cols) {
+    KeyedMatrix(int rows, int cols) : mat(rows, cols) 
+    {
         mat.setZero();
     }
 
@@ -43,8 +48,10 @@ public:
     * col - The column index.
     * Outputs:        None.
     ***********************************************************************************************/
-    void addKey(const std::string& key, int row, int col) {
-        if (row >= mat.rows() || col >= mat.cols()) {
+    void addKey(const std::string& key, int row, int col) 
+    {
+        if (row >= mat.rows() || col >= mat.cols()) 
+        {
             std::cerr << "Error: Index out of bounds when adding key '" << key << "'\n";
             return;
         }
@@ -59,13 +66,17 @@ public:
     * value - The new double value to set.
     * Outputs:        None.
     ***********************************************************************************************/
-    void setValue(const std::string& key, double value) {
+    void setValue(const std::string& key, double value) 
+    {
         auto it = keyToIndex.find(key);
-        if (it != keyToIndex.end()) {
+        if (it != keyToIndex.end()) 
+        {
             int r = it->second.first;
             int c = it->second.second;
             mat(r, c) = value;
-        } else {
+        } 
+        else 
+        {
             std::cerr << "Error: Key '" << key << "' not found\n";
         }
     }
@@ -77,13 +88,17 @@ public:
     * Inputs:         key - The string key of the element to retrieve.
     * Outputs:        A double representing the value at the key's location, or 0.0 if not found.
     ***********************************************************************************************/
-    double getValue(const std::string& key) const {
+    double getValue(const std::string& key) const 
+    {
         auto it = keyToIndex.find(key);
-        if (it != keyToIndex.end()) {
+        if (it != keyToIndex.end()) 
+        {
             int r = it->second.first;
             int c = it->second.second;
             return mat(r, c);
-        } else {
+        } 
+        else 
+        {
             std::cerr << "Warning: Key '" << key << "' not found\n";
             return 0.0;
         }
@@ -97,16 +112,21 @@ public:
     * newCols - The new number of columns.
     * Outputs:        None.
     ***********************************************************************************************/
-    void resize(int newRows, int newCols) {
+    void resize(int newRows, int newCols) 
+    {
         mat.conservativeResize(newRows, newCols);
         // You might want to check keys that now point outside new size:
-        for (auto it = keyToIndex.begin(); it != keyToIndex.end(); ) {
+        for (auto it = keyToIndex.begin(); it != keyToIndex.end(); ) 
+        {
             int r = it->second.first;
             int c = it->second.second;
-            if (r >= newRows || c >= newCols) {
+            if (r >= newRows || c >= newCols) 
+            {
                 std::cerr << "Warning: Removing key '" << it->first << "' due to resize out-of-bounds\n";
                 it = keyToIndex.erase(it);
-            } else {
+            } 
+            else 
+            {
                 ++it;
             }
         }
@@ -118,10 +138,13 @@ public:
     * Inputs:         None.
     * Outputs:        None.
     ***********************************************************************************************/
-    void printMatrix() const {
+    void printMatrix() const 
+    {
         std::cout << "Matrix:\n" << mat << "\n";
     }
 };
+
+// ***************************************************************************************************
 
 /***************************************************************************************************
 * Function:       main
@@ -129,7 +152,12 @@ public:
 * KeyedMatrix class, including adding keys, setting values, resizing the
 * matrix, and retrieving data.
 ***************************************************************************************************/
-int main() {
+
+/*
+
+
+int main() 
+{
     KeyedMatrix km(3, 3);
 
     // Add keys mapping to matrix positions
@@ -158,3 +186,7 @@ int main() {
 
     return 0;
 }
+
+*/
+
+#endif // GRAPH_MAP_CPP

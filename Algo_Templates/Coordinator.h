@@ -5,6 +5,9 @@
 * on a spherical Earth model, including distance, bearing, and destination
 * point determination. The main function demonstrates their usage.
 ***************************************************************************************************/
+#ifndef COORDINATOR_CPP // Include guard
+#define COORDINATOR_CPP
+
 #include <bits/stdc++.h>
 using namespace std;
 
@@ -13,7 +16,8 @@ using namespace std;
 * Description:    A simple structure to represent a geographic coordinate with latitude and
 * longitude values in degrees.
 ***************************************************************************************************/
-struct LatLon {
+struct LatLon 
+{
     double lat; // degrees
     double lon; // degrees
     LatLon() : lat(0), lon(0) {}
@@ -25,7 +29,8 @@ struct LatLon {
 * Description:    A utility class containing a collection of static methods for performing
 * geographic calculations. All calculations assume a spherical Earth model.
 ***************************************************************************************************/
-class GeoUtils {
+class GeoUtils 
+{
 public:
     // Earth radius (mean) in meters
     static constexpr double R = 6371000.0;
@@ -37,6 +42,7 @@ public:
     * Outputs:        The converted angle.
     ***********************************************************************************************/
     static double toRad(double deg) { return deg * M_PI / 180.0; }
+    
     static double toDeg(double rad) { return rad * 180.0 / M_PI; }
 
     /***********************************************************************************************
@@ -47,7 +53,8 @@ public:
     * b - The ending coordinate.
     * Outputs:        The distance in meters.
     ***********************************************************************************************/
-    static double distance(const LatLon &a, const LatLon &b) {
+    static double distance(const LatLon &a, const LatLon &b) 
+    {
         double phi1 = toRad(a.lat), phi2 = toRad(b.lat);
         double dphi = toRad(b.lat - a.lat);
         double dlambda = toRad(b.lon - a.lon);
@@ -56,6 +63,7 @@ public:
         double t = sin(dlambda/2.0);
         double A = s*s + cos(phi1) * cos(phi2) * t*t;
         double C = 2.0 * atan2(sqrt(A), sqrt(1.0 - A));
+        
         return R * C;
     }
 
@@ -67,7 +75,8 @@ public:
     * to   - The ending coordinate.
     * Outputs:        The initial bearing in degrees (0 to 360).
     ***********************************************************************************************/
-    static double bearing(const LatLon &from, const LatLon &to) {
+    static double bearing(const LatLon &from, const LatLon &to) 
+    {
         double phi1 = toRad(from.lat), phi2 = toRad(to.lat);
         double lambda1 = toRad(from.lon), lambda2 = toRad(to.lon);
         double dlambda = lambda2 - lambda1;
@@ -76,6 +85,7 @@ public:
         double x = cos(phi1)*sin(phi2) - sin(phi1)*cos(phi2)*cos(dlambda);
         double theta = atan2(y, x); // radians
         double deg = fmod(toDeg(theta) + 360.0, 360.0);
+        
         return deg;
     }
 
@@ -88,7 +98,8 @@ public:
     * distance_m  - The distance to travel in meters.
     * Outputs:        The destination LatLon coordinate.
     ***********************************************************************************************/
-    static LatLon destinationPoint(const LatLon &from, double bearing_deg, double distance_m) {
+    static LatLon destinationPoint(const LatLon &from, double bearing_deg, double distance_m) 
+    {
         double phi1 = toRad(from.lat);
         double lambda1 = toRad(from.lon);
         double theta = toRad(bearing_deg);
@@ -97,8 +108,10 @@ public:
         double phi2 = asin( sin(phi1)*cos(delta) + cos(phi1)*sin(delta)*cos(theta) );
         double lambda2 = lambda1 + atan2(sin(theta)*sin(delta)*cos(phi1),
                                          cos(delta) - sin(phi1)*sin(phi2));
+        
         // Normalize lon to -180..+180
         double lon_deg = fmod(toDeg(lambda2) + 540.0, 360.0) - 180.0;
+        
         return LatLon(toDeg(phi2), lon_deg);
     }
 
@@ -110,11 +123,14 @@ public:
     * Inputs:         A, B, C - The three LatLon coordinates forming the angle.
     * Outputs:        The angle at B in degrees [0, 180].
     ***********************************************************************************************/
-    static double angleBetween(const LatLon &A, const LatLon &B, const LatLon &C) {
+    static double angleBetween(const LatLon &A, const LatLon &B, const LatLon &C) 
+    {
         double brBA = bearing(B, A);
         double brBC = bearing(B, C);
         double diff = fabs(brBA - brBC);
+
         if (diff > 180.0) diff = 360.0 - diff;
+        
         return diff;
     }
 
@@ -130,7 +146,8 @@ public:
     ***********************************************************************************************/
     static pair<LatLon, double> selectCoordinate(const LatLon &fixed,
                                                  const LatLon &dest,
-                                                 double angle_deg) {
+                                                 double angle_deg) 
+    {
         // 1) compute bearing from fixed to dest
         double brFD = bearing(fixed, dest);
 
@@ -151,6 +168,7 @@ public:
     }
 };
 
+//***************************************************************************************************
 
 /***************************************************************************************************
 * Function:       main
@@ -158,7 +176,11 @@ public:
 * calculating distance, angle, and selecting a new coordinate based on an
 * angle constraint.
 ***************************************************************************************************/
-int main() {
+
+/*
+
+int main() 
+{
     // Example points:
     // Fixed (F): New Delhi (approx)
     LatLon F(28.6139, 77.2090);
@@ -190,3 +212,7 @@ int main() {
 
     return 0;
 }
+
+*/
+
+#endif // COORDINATOR_CPP 

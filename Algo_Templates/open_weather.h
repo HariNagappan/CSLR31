@@ -5,6 +5,10 @@
 * response. The main class, WeatherFetcher, supports fetching data by city name,
 * geographic coordinates, or postal code.
 ***************************************************************************************************/
+
+#ifndef CURL_STATICLIB // Include Guard for static linking
+#define CURL_STATICLIB
+
 #include <iostream>
 #include <string>
 #include <curl/curl.h>
@@ -21,7 +25,8 @@
 * userp    - User-provided pointer, expected to be a std::string*.
 * Outputs:        The total number of bytes handled (size * nmemb).
 ***************************************************************************************************/
-size_t WriteCallback(void* contents, size_t size, size_t nmemb, void* userp) {
+size_t WriteCallback(void* contents, size_t size, size_t nmemb, void* userp) 
+{
     ((std::string*)userp)->append((char*)contents, size * nmemb);
     return size * nmemb;
 }
@@ -45,7 +50,8 @@ private:
     * Outputs:        A std::string containing the JSON response from the server, or an empty
     * string if an error occurred.
     ***********************************************************************************************/
-    std::string fetchDataFromAPI(const std::string& url) {
+    std::string fetchDataFromAPI(const std::string& url) 
+    {
         CURL* curl;
         CURLcode res;
         std::string readBuffer;
@@ -54,13 +60,15 @@ private:
         curl_global_init(CURL_GLOBAL_DEFAULT);
         curl = curl_easy_init();
         
-        if (curl) {
+        if (curl) 
+        {
             curl_easy_setopt(curl, CURLOPT_URL, url.c_str());
             curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, WriteCallback);
             curl_easy_setopt(curl, CURLOPT_WRITEDATA, &readBuffer);
             
             res = curl_easy_perform(curl);
-            if (res != CURLE_OK) {
+            if (res != CURLE_OK) 
+            {
                 std::cerr << "cURL error: " << curl_easy_strerror(res) << std::endl;
                 curl_easy_cleanup(curl);
                 curl_global_cleanup();
@@ -80,13 +88,15 @@ private:
     * Inputs:         jsonResponse - The raw JSON string from the API.
     * Outputs:        None.
     ***********************************************************************************************/
-    void parseWeatherData(const std::string& jsonResponse) {
+    void parseWeatherData(const std::string& jsonResponse) 
+    {
         Json::Value root;
         Json::CharReaderBuilder builder;
         std::string errs;
 
         std::istringstream sstream(jsonResponse);
-        if (Json::parseFromStream(builder, sstream, &root, &errs)) {
+        if (Json::parseFromStream(builder, sstream, &root, &errs)) 
+        {
             std::string city_name = root["name"].asString();
             double temperature = root["main"]["temp"].asDouble();
             std::string weather_desc = root["weather"][0]["description"].asString();
@@ -96,7 +106,9 @@ private:
             std::cout << "Temperature: " << temperature << "°C\n";
             std::cout << "Description: " << weather_desc << "\n";
             std::cout << "Humidity: " << humidity << "%\n";
-        } else {
+        } 
+        else 
+        {
             std::cerr << "Failed to parse the response JSON.\n";
         }
     }
@@ -116,11 +128,13 @@ public:
     * Inputs:         cityName - The name of the city.
     * Outputs:        None.
     ***********************************************************************************************/
-    void fetchWeatherData(const std::string& cityName) {
+    void fetchWeatherData(const std::string& cityName) 
+    {
         std::string url = "http://api.openweathermap.org/data/2.5/weather?q=" + cityName +
                           "&appid=" + apiKey + "&units=metric";
         std::string response = fetchDataFromAPI(url);
-        if (!response.empty()) {
+        if (!response.empty()) 
+        {
             parseWeatherData(response);
         }
     }
@@ -132,11 +146,13 @@ public:
     * lon - The longitude.
     * Outputs:        None.
     ***********************************************************************************************/
-    void fetchWeatherData(double lat, double lon) {
+    void fetchWeatherData(double lat, double lon) 
+    {
         std::string url = "http://api.openweathermap.org/data/2.5/weather?lat=" + std::to_string(lat) +
                           "&lon=" + std::to_string(lon) + "&appid=" + apiKey + "&units=metric";
         std::string response = fetchDataFromAPI(url);
-        if (!response.empty()) {
+        if (!response.empty()) 
+        {
             parseWeatherData(response);
         }
     }
@@ -147,15 +163,19 @@ public:
     * Inputs:         pinCode - The postal code (e.g., ZIP code).
     * Outputs:        None.
     ***********************************************************************************************/
-    void fetchWeatherData(int pinCode) {
+    void fetchWeatherData(int pinCode) 
+    {
         std::string url = "http://api.openweathermap.org/data/2.5/weather?zip=" + std::to_string(pinCode) +
                           "&appid=" + apiKey + "&units=metric";
         std::string response = fetchDataFromAPI(url);
-        if (!response.empty()) {
+        if (!response.empty()) 
+        {
             parseWeatherData(response);
         }
     }
 };
+
+// ***************************************************************************************************
 
 /***************************************************************************************************
 * Function:       main
@@ -163,7 +183,12 @@ public:
 * and demonstrates fetching weather data using all three available methods:
 * by city name, by coordinates, and by postal code.
 ***************************************************************************************************/
-int main() {
+
+
+/*
+
+int main() 
+{
     std::string apiKey = "bd5e378503939ddaee76f12ad7a97608"; // Replace with your OpenWeather API key
     WeatherFetcher weatherFetcher(apiKey);
 
@@ -185,3 +210,7 @@ int main() {
 
     return 0;
 }
+
+*/
+
+#endif // CURL_STATICLIB

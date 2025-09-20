@@ -6,6 +6,11 @@
 * and bearings on a spherical Earth model, producing more points near the
 * start and end of the journey.
 ***************************************************************************************************/
+
+#ifndef M_PI //Include guard for M_PI
+// #define M_PI 3.14159265358979323846
+
+
 #include <bits/stdc++.h>
 using namespace std;
 
@@ -14,7 +19,8 @@ using namespace std;
 * Description:    A simple structure to represent a geographic coordinate with latitude and
 * longitude values in degrees.
 ***************************************************************************************************/
-struct LatLon {
+struct LatLon 
+{
     double lat; // degrees
     double lon; // degrees
     LatLon() : lat(0), lon(0) {}
@@ -27,7 +33,8 @@ struct LatLon {
 * on a spherical Earth model. It includes functions for distance (Haversine),
 * bearing, and calculating a destination point.
 ***************************************************************************************************/
-struct Geo {
+struct Geo 
+{
     static constexpr double R = 6371000.0; // mean Earth radius (meters)
     static double toRad(double deg) { return deg * M_PI / 180.0; }
     static double toDeg(double rad) { return rad * 180.0 / M_PI; }
@@ -40,7 +47,8 @@ struct Geo {
     * b - The ending coordinate.
     * Outputs:        The distance in meters.
     ***********************************************************************************************/
-    static double distance_m(const LatLon &a, const LatLon &b) {
+    static double distance_m(const LatLon &a, const LatLon &b) 
+    {
         double phi1 = toRad(a.lat), phi2 = toRad(b.lat);
         double dphi = toRad(b.lat - a.lat);
         double dlambda = toRad(b.lon - a.lon);
@@ -59,7 +67,8 @@ struct Geo {
     * to   - The ending coordinate.
     * Outputs:        The initial bearing in degrees (0 to 360).
     ***********************************************************************************************/
-    static double bearing_deg(const LatLon &from, const LatLon &to) {
+    static double bearing_deg(const LatLon &from, const LatLon &to) 
+    {
         double phi1 = toRad(from.lat), phi2 = toRad(to.lat);
         double lam1 = toRad(from.lon), lam2 = toRad(to.lon);
         double dl = lam2 - lam1;
@@ -79,7 +88,8 @@ struct Geo {
     * distance_m  - The distance to travel in meters.
     * Outputs:        The destination LatLon coordinate.
     ***********************************************************************************************/
-    static LatLon destinationPoint(const LatLon &from, double bearing_deg, double distance_m) {
+    static LatLon destinationPoint(const LatLon &from, double bearing_deg, double distance_m) 
+    {
         double phi1 = toRad(from.lat);
         double lambda1 = toRad(from.lon);
         double theta = toRad(bearing_deg);
@@ -101,7 +111,8 @@ struct Geo {
 * method to process a list of waypoints into a high-resolution path with
 * adaptive sampling density based on proximity to the start and end points.
 ***************************************************************************************************/
-class FlightPathSmoother {
+class FlightPathSmoother 
+{
 public:
     /***********************************************************************************************
     * Struct:         Params
@@ -109,7 +120,8 @@ public:
     * radii and spacing parameters for "near", "mid", and "far" zones relative
     * to the start and destination points.
     ***********************************************************************************************/
-    struct Params {
+    struct Params 
+    {
         double near_radius_km = 50.0;
         double near_spacing_km = 50.0;
         double mid_radius_km = 250.0;
@@ -128,10 +140,14 @@ public:
     * params    - A Params struct with configuration for sampling density.
     * Outputs:        A vector of LatLon points representing the smoothed path.
     ***********************************************************************************************/
-    static vector<LatLon> generatePath(const vector<LatLon> &waypoints, const Params &params = Params()) {
+    static vector<LatLon> generatePath(const vector<LatLon> &waypoints, const Params &params = Params()) 
+    {
         vector<LatLon> out;
+        
         if (waypoints.empty()) return out;
-        if (waypoints.size() == 1) {
+        
+        if (waypoints.size() == 1) 
+        {
             out.push_back(waypoints.front());
             return out;
         }
@@ -148,30 +164,37 @@ public:
         const double min_spacing_m = max(0.001, params.min_spacing_km * 1000.0);
 
         // helper: spacing at a particular candidate point determined by proximity to start/end
-        auto choose_spacing_at = [&](const LatLon &p)->double {
+        auto choose_spacing_at = [&](const LatLon &p)->double 
+        {
             double dstart = Geo::distance_m(p, globalStart);
             double dend   = Geo::distance_m(p, globalEnd);
             double dmin = min(dstart, dend);
+            
             if (dmin <= near_radius_m) return max(min_spacing_m, near_spacing_m);
+            
             if (dmin <= mid_radius_m)  return max(min_spacing_m, mid_spacing_m);
+            
             return max(min_spacing_m, far_spacing_m);
         };
 
         // Iterate segments
-        for (size_t i = 0; i + 1 < waypoints.size(); ++i) {
+        for (size_t i = 0; i + 1 < waypoints.size(); ++i) 
+        {
             const LatLon &A = waypoints[i];
             const LatLon &B = waypoints[i+1];
 
             // Always add A unless it's a duplicate of last added
             if (out.empty()) out.push_back(A);
-            else {
+            else 
+            {
                 const LatLon &last = out.back();
                 if (Geo::distance_m(last, A) > 0.5) // avoid duplicates (0.5 m tolerance)
                     out.push_back(A);
             }
 
             double segLen = Geo::distance_m(A, B); // meters
-            if (segLen <= 1.0) {
+            if (segLen <= 1.0) 
+            {
                 // almost zero length; continue
                 continue;
             }
@@ -181,7 +204,9 @@ public:
             // Walk along the great-circle from A to B using adaptive step sizes.
             // We'll step using spacing determined at the current candidate point.
             double s = 0.0; // distance from A already placed
-            while (true) {
+            
+            while (true) 
+            {
                 // determine spacing at current point (point at s)
                 LatLon currP = Geo::destinationPoint(A, bearingAB, s);
                 double spacing = choose_spacing_at(currP);
@@ -191,7 +216,8 @@ public:
                 if (remaining <= 0.0) break;
 
                 // If spacing is larger than remaining, place final point B and break
-                if (spacing >= remaining - 1e-6) {
+                if (spacing >= remaining - 1e-6) 
+                {
                     // Add B (will be added by next outer loop iteration as A, but ensure last point of segment)
                     out.push_back(B);
                     break;
@@ -205,16 +231,19 @@ public:
                 LatLon nextP = Geo::destinationPoint(A, bearingAB, s);
 
                 // avoid adding points that are extremely close to previous (numerical)
-                if (Geo::distance_m(out.back(), nextP) > 0.5) {
+                if (Geo::distance_m(out.back(), nextP) > 0.5) 
+                {
                     out.push_back(nextP);
                 }
 
                 // If we reached very near to B due to cumulative steps, add B and exit loop
-                if (segLen - s <= 0.5) {
+                if (segLen - s <= 0.5) 
+                {
                     out.push_back(B);
                     break;
                 }
             }
+            
             // ensure B is present at end of segment
             if (Geo::distance_m(out.back(), B) > 0.5) out.push_back(B);
             // continue to next segment; note next segment will re-add B as its A if not filtered out
@@ -226,7 +255,8 @@ public:
 
         // Optionally: remove near-duplicate consecutive points (safety cleanup)
         vector<LatLon> cleaned;
-        for (const auto &p : out) {
+        for (const auto &p : out) 
+        {
             if (cleaned.empty() || Geo::distance_m(cleaned.back(), p) > 0.5) cleaned.push_back(p);
         }
 
@@ -234,13 +264,20 @@ public:
     }
 };
 
+// ***************************************************************************************************
+
 /***************************************************************************************************
 * Function:       main
 * Description:    Entry point and demonstration of the FlightPathSmoother. It defines a set of
 * waypoints for a flight path and uses the generatePath method to create a
 * smoothed version, printing the resulting coordinates to the console.
 ***************************************************************************************************/
-int main() {
+
+
+/*
+
+int main() 
+{
     ios::fmtflags f = cout.flags();
     cout.setf(std::ios::fixed);
     cout << setprecision(6);
@@ -260,10 +297,15 @@ int main() {
     auto path = FlightPathSmoother::generatePath(waypoints, p);
 
     cout << "Generated path points: " << path.size() << "\n";
-    for (size_t i = 0; i < path.size(); ++i) {
+    for (size_t i = 0; i < path.size(); ++i) 
+    {
         cout << i+1 << ": " << path[i].lat << ", " << path[i].lon << "\n";
     }
 
     cout.flags(f);
     return 0;
 }
+
+*/
+
+#endif // M_PI guard

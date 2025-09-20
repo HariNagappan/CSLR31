@@ -1,3 +1,5 @@
+
+
 /***************************************************************************************************
 * File:           ascent_and_descent_perceptor.cpp (Original: flight_profile.cpp)
 * Description:    This file implements the FlightProfile class, which generates a simplified
@@ -5,6 +7,10 @@
 * It can calculate the aircraft's altitude and speed at any given distance
 * along the flight path and can handle both long and short routes.
 ***************************************************************************************************/
+#ifndef FLIGHT_PROFILE_CPP // include guard
+#define FLIGHT_PROFILE_CPP
+
+
 #include <bits/stdc++.h>
 using namespace std;
 
@@ -14,7 +20,8 @@ using namespace std;
 * flight profile. It includes altitude, horizontal and vertical speeds, and
 * the current flight phase.
 ***************************************************************************************************/
-struct ProfilePoint {
+struct ProfilePoint 
+{
     double altitude_m;          // altitude above destination/sea-level (m)
     double horizontal_speed_m_s; // ground/track speed (m/s)
     double vertical_speed_m_s;   // positive for climb, negative for descent (m/s)
@@ -27,7 +34,8 @@ struct ProfilePoint {
 * climb/descent rates and cruise altitude. It can determine the flight phase
 * and state for any point along a given route distance.
 ***************************************************************************************************/
-class FlightProfile {
+class FlightProfile 
+{
 public:
     /***********************************************************************************************
     * Function:       FlightProfile (Constructor)
@@ -66,7 +74,8 @@ public:
     * Inputs:         total_m - The total route distance in meters.
     * Outputs:        None.
     ***********************************************************************************************/
-    void setTotalDistance(double total_m) {
+    void setTotalDistance(double total_m) 
+    {
         if (total_m > 0.0) total_distance_m = total_m;
         else total_distance_m = -1.0;
         recomputeDerived();
@@ -80,8 +89,11 @@ public:
     * Outputs:        None.
     ***********************************************************************************************/
     void setCruiseAltitude(double m) { H_cruise = m; recomputeDerived(); }
+    
     void setClimbParams(double vz_m_s, double v_climb_m_s) { Vz_climb = vz_m_s; V_climb = v_climb_m_s; recomputeDerived(); }
+    
     void setDescentParams(double vz_m_s, double v_desc_m_s) { Vz_desc = vz_m_s; V_desc = v_desc_m_s; recomputeDerived(); }
+    
     void setCruiseSpeed(double v_cruise_m_s) { V_cruise = v_cruise_m_s; recomputeDerived(); }
 
     /***********************************************************************************************
@@ -93,65 +105,82 @@ public:
     * Inputs:         s_from_start_m - The distance from the start in meters.
     * Outputs:        A ProfilePoint struct containing the aircraft's state.
     ***********************************************************************************************/
-    ProfilePoint profileAtDistanceFromStart(double s_from_start_m) const {
+    ProfilePoint profileAtDistanceFromStart(double s_from_start_m) const 
+    {
         ProfilePoint p;
-        if (s_from_start_m <= 0.0) {
+        if (s_from_start_m <= 0.0) 
+        {
             p.phase = "on-ground";
             p.altitude_m = 0.0;
             p.horizontal_speed_m_s = 0.0;
             p.vertical_speed_m_s = 0.0;
+            
             return p;
         }
 
-        if (has_total_distance && total_distance_m < (D_climb + D_desc)) {
+        if (has_total_distance && total_distance_m < (D_climb + D_desc)) 
+        {
             double x_meet = (m2 * total_distance_m) / (m1 + m2);
             double Hpeak = m1 * x_meet;
 
-            if (s_from_start_m <= x_meet) {
+            if (s_from_start_m <= x_meet) 
+            {
                 double altitude = m1 * s_from_start_m;
                 p.altitude_m = altitude;
                 p.horizontal_speed_m_s = V_climb;
                 p.vertical_speed_m_s = Vz_climb;
                 p.phase = "climb";
+                
                 return p;
-            } else if (s_from_start_m < total_distance_m - 1e-9) {
+            } 
+            else if (s_from_start_m < total_distance_m - 1e-9) 
+            {
                 double d_to_end = total_distance_m - s_from_start_m;
                 double altitude = m2 * d_to_end;
                 p.altitude_m = altitude;
                 p.horizontal_speed_m_s = V_desc;
                 p.vertical_speed_m_s = -Vz_desc;
                 p.phase = "descent";
+                
                 return p;
-            } else {
+            } 
+            else 
+            {
                 p.phase = "on-ground";
                 p.altitude_m = 0.0;
                 p.horizontal_speed_m_s = 0.0;
                 p.vertical_speed_m_s = 0.0;
+                
                 return p;
             }
         }
 
-        if (s_from_start_m < D_climb - 1e-9) {
+        if (s_from_start_m < D_climb - 1e-9) 
+        {
             double altitude = m1 * s_from_start_m;
             p.altitude_m = min(altitude, H_cruise);
             double frac = (D_climb > 1e-9) ? (s_from_start_m / D_climb) : 1.0;
             p.horizontal_speed_m_s = V_climb + (V_cruise - V_climb) * frac;
             p.vertical_speed_m_s = Vz_climb;
             p.phase = "climb";
+            
             return p;
         }
 
         double descent_start_from_start = has_total_distance ? (total_distance_m - D_desc) : numeric_limits<double>::infinity();
 
-        if (s_from_start_m <= descent_start_from_start - 1e-9) {
+        if (s_from_start_m <= descent_start_from_start - 1e-9) 
+        {
             p.phase = "cruise";
             p.altitude_m = H_cruise;
             p.horizontal_speed_m_s = V_cruise;
             p.vertical_speed_m_s = 0.0;
+            
             return p;
         }
 
-        if (s_from_start_m < total_distance_m - 1e-9) {
+        if (s_from_start_m < total_distance_m - 1e-9) 
+        {
             double d_to_end = total_distance_m - s_from_start_m;
             double altitude = m2 * d_to_end;
             p.altitude_m = min(H_cruise, max(0.0, altitude));
@@ -160,6 +189,7 @@ public:
             p.horizontal_speed_m_s = V_cruise + (V_desc - V_cruise) * frac;
             p.vertical_speed_m_s = -Vz_desc;
             p.phase = "descent";
+            
             return p;
         }
 
@@ -167,6 +197,7 @@ public:
         p.altitude_m = 0.0;
         p.horizontal_speed_m_s = 0.0;
         p.vertical_speed_m_s = 0.0;
+        
         return p;
     }
 
@@ -177,24 +208,41 @@ public:
     * Inputs:         d_from_dest_m - The distance from the destination in meters.
     * Outputs:        A ProfilePoint struct containing the aircraft's state.
     ***********************************************************************************************/
-    ProfilePoint profileAtDistanceFromDestination(double d_from_dest_m) const {
-        if (!has_total_distance) {
+    ProfilePoint profileAtDistanceFromDestination(double d_from_dest_m) const 
+    {
+        if (!has_total_distance) 
+        {
             ProfilePoint p;
-            if (d_from_dest_m <= 0.0) {
-                p.phase = "on-ground"; p.altitude_m = 0; p.horizontal_speed_m_s=0; p.vertical_speed_m_s=0; return p;
+            if (d_from_dest_m <= 0.0) 
+            {
+                p.phase = "on-ground"; 
+                p.altitude_m = 0; 
+                p.horizontal_speed_m_s=0; 
+                p.vertical_speed_m_s=0; 
+                
+                return p;
             }
-            if (d_from_dest_m <= D_desc) {
+            if (d_from_dest_m <= D_desc) 
+            {
                 double altitude = m2 * d_from_dest_m;
                 p.altitude_m = min(altitude, H_cruise);
                 p.horizontal_speed_m_s = V_desc;
                 p.vertical_speed_m_s = -Vz_desc;
                 p.phase = "descent";
                 return p;
-            } else {
-                p.phase = "cruise"; p.altitude_m = H_cruise; p.horizontal_speed_m_s = V_cruise; p.vertical_speed_m_s = 0.0;
+            } 
+            else 
+            {
+                p.phase = "cruise"; 
+                p.altitude_m = H_cruise; 
+                p.horizontal_speed_m_s = V_cruise; 
+                p.vertical_speed_m_s = 0.0;
+                
                 return p;
             }
-        } else {
+        } 
+        else 
+        {
             double s_from_start = total_distance_m - d_from_dest_m;
             return profileAtDistanceFromStart(s_from_start);
         }
@@ -207,13 +255,17 @@ public:
     * Inputs:         samples - The number of points to sample.
     * Outputs:        A vector of pairs, each containing a distance and its ProfilePoint.
     ***********************************************************************************************/
-    vector<pair<double, ProfilePoint>> sampleAlongRoute(int samples) const {
+    vector<pair<double, ProfilePoint>> sampleAlongRoute(int samples) const 
+    {
         vector<pair<double, ProfilePoint>> out;
         if (!has_total_distance || samples <= 0) return out;
-        for (int i = 0; i <= samples; ++i) {
+        
+        for (int i = 0; i <= samples; ++i) 
+        {
             double s = (double(i) / double(max(1, samples))) * total_distance_m;
             out.push_back({ s, profileAtDistanceFromStart(s) });
         }
+        
         return out;
     }
 
@@ -256,7 +308,8 @@ private:
     * Inputs:         None.
     * Outputs:        None.
     ***********************************************************************************************/
-    void recomputeDerived() {
+    void recomputeDerived() 
+    {
         m1 = (V_climb > 1e-9) ? (Vz_climb / V_climb) : 0.0;
         m2 = (V_desc  > 1e-9) ? (Vz_desc  / V_desc)  : 0.0;
 
@@ -265,16 +318,23 @@ private:
 
         has_total_distance = (total_distance_m > 0.0);
 
-        if (has_total_distance && total_distance_m < (D_climb + D_desc)) {
+        if (has_total_distance && total_distance_m < (D_climb + D_desc)) 
+        {
             double L = total_distance_m;
             double x_meet = (m2 * L) / (m1 + m2);
             H_peak_for_short = m1 * x_meet;
             if (H_peak_for_short > H_cruise) H_peak_for_short = H_cruise;
-        } else {
+        } 
+        else 
+        {
             H_peak_for_short = H_cruise;
         }
     }
 };
+
+
+
+// **************************************************************************************************
 
 /***************************************************************************************************
 * Function:       main
@@ -282,6 +342,8 @@ private:
 * for a 2500 km route, queries the profile at various points, and then samples
 * the entire route to print a summary.
 ***************************************************************************************************/
+/*
+
 int main() {
     ios::fmtflags f = cout.flags();
     cout.setf(std::ios::fixed);
@@ -331,3 +393,7 @@ int main() {
     cout.flags(f);
     return 0;
 }
+
+*/
+
+#endif // include guard /* FLIGHT_PROFILE_CPP */
