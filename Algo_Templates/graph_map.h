@@ -14,6 +14,8 @@
 #include <string>
 #include <iostream>
 
+using namespace std;
+
 namespace Matrix 
 {
 
@@ -30,7 +32,7 @@ namespace Matrix
     {
     private:
         Eigen::MatrixXd mat;
-        std::unordered_map<std::string, std::pair<int,int>> keyToIndex;
+        unordered_map<string, pair<int,int>> keyToIndex;
 
     public:
         /***********************************************************************************************
@@ -55,11 +57,11 @@ namespace Matrix
         * col - The column index.
         * Outputs:        None.
         ***********************************************************************************************/
-        void addKey(const std::string& key, int row, int col) 
+        void addKey(const string& key, int row, int col) 
         {
             if (row >= mat.rows() || col >= mat.cols()) 
             {
-                std::cerr << "Error: Index out of bounds when adding key '" << key << "'\n";
+                cerr << "Error: Index out of bounds when adding key '" << key << "'\n";
                 return;
             }
             keyToIndex[key] = {row, col};
@@ -73,7 +75,7 @@ namespace Matrix
         * value - The new double value to set.
         * Outputs:        None.
         ***********************************************************************************************/
-        void setValue(const std::string& key, double value) 
+        void setValue(const string& key, double value) 
         {
             auto it = keyToIndex.find(key);
             if (it != keyToIndex.end()) 
@@ -84,7 +86,7 @@ namespace Matrix
             } 
             else 
             {
-                std::cerr << "Error: Key '" << key << "' not found\n";
+                cerr << "Error: Key '" << key << "' not found\n";
             }
         }
 
@@ -95,7 +97,7 @@ namespace Matrix
         * Inputs:         key - The string key of the element to retrieve.
         * Outputs:        A double representing the value at the key's location, or 0.0 if not found.
         ***********************************************************************************************/
-        double getValue(const std::string& key) const 
+        double getValue(const string& key) const 
         {
             auto it = keyToIndex.find(key);
             if (it != keyToIndex.end()) 
@@ -106,7 +108,7 @@ namespace Matrix
             } 
             else 
             {
-                std::cerr << "Warning: Key '" << key << "' not found\n";
+                cerr << "Warning: Key '" << key << "' not found\n";
                 return 0.0;
             }
         }
@@ -129,7 +131,7 @@ namespace Matrix
                 int c = it->second.second;
                 if (r >= newRows || c >= newCols) 
                 {
-                    std::cerr << "Warning: Removing key '" << it->first << "' due to resize out-of-bounds\n";
+                    cerr << "Warning: Removing key '" << it->first << "' due to resize out-of-bounds\n";
                     it = keyToIndex.erase(it);
                 } 
                 else 
@@ -147,7 +149,7 @@ namespace Matrix
         ***********************************************************************************************/
         void printMatrix() const 
         {
-            std::cout << "Matrix:\n" << mat << "\n";
+            cout << "Matrix:\n" << mat << "\n";
         }
     };
 
@@ -183,11 +185,11 @@ int main()
 
     // Print matrix and values
     km.printMatrix();
-    std::cout << "Value at 'B': " << km.getValue("B") << "\n";
+    cout << "Value at 'B': " << km.getValue("B") << "\n";
 
     // Resize matrix to 4x5
     km.resize(4, 5);
-    std::cout << "After resizing:\n";
+    cout << "After resizing:\n";
     km.printMatrix();
 
     // Add a key in new region

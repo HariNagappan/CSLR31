@@ -7,9 +7,11 @@
     * start and end of the journey.
 ***************************************************************************************************/
 
-#ifndef M_PI //Include guard for M_PI
+#ifndef PATH_PERCEPTOR //Include guard for M_PI
+#define PATH_PERCEPTOR
 #define M_PI 3.14159265358979323846
 
+#include <Coordinator.h>
 
 #include <bits/stdc++.h>
 using namespace std;
@@ -21,6 +23,7 @@ namespace Utils
     * Description:    A simple structure to represent a geographic coordinate with latitude and
     * longitude values in degrees.
     ***************************************************************************************************/
+    /*
     struct LatLon 
     {
         double lat; // degrees
@@ -28,6 +31,7 @@ namespace Utils
         LatLon() : lat(0), lon(0) {}
         LatLon(double la, double lo) : lat(la), lon(lo) {}
     };
+    */
 
     /***************************************************************************************************
     * Struct:         Geo
@@ -142,7 +146,7 @@ namespace Utils
         * params    - A Params struct with configuration for sampling density.
         * Outputs:        A vector of LatLon points representing the smoothed path.
         ***********************************************************************************************/
-        static vector<LatLon> generatePath(const vector<LatLon> &waypoints, const Params &params = Params()) 
+        static vector<LatLon> generatePath(const vector<LatLon> &waypoints, const Params &params) 
         {
             vector<LatLon> out;
             

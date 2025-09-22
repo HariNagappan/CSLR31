@@ -16,21 +16,23 @@
 #include <json/json.h>
 #include <sstream>
 
+using namespace std;
+
 namespace Utils
 {
     /***************************************************************************************************
     * Function:       WriteCallback
     * Description:    A callback function for libcurl to handle incoming data from an HTTP request.
-    * It appends the received data chunk to a std::string buffer.
+    * It appends the received data chunk to a string buffer.
     * Inputs:         contents - Pointer to the data received.
     * size     - Size of each data item.
     * nmemb    - Number of data items.
-    * userp    - User-provided pointer, expected to be a std::string*.
+    * userp    - User-provided pointer, expected to be a string*.
     * Outputs:        The total number of bytes handled (size * nmemb).
     ***************************************************************************************************/
     size_t WriteCallback(void* contents, size_t size, size_t nmemb, void* userp) 
     {
-        ((std::string*)userp)->append((char*)contents, size * nmemb);
+        ((string*)userp)->append((char*)contents, size * nmemb);
         return size * nmemb;
     }
 
@@ -43,21 +45,21 @@ namespace Utils
     class WeatherFetcher 
     {
     private:
-        std::string apiKey;
+        string apiKey;
         
         /***********************************************************************************************
         * Function:       fetchDataFromAPI (private)
         * Description:    Performs the HTTP GET request to the specified URL using libcurl.
         * It collects the response into a string.
         * Inputs:         url - The full URL for the API request.
-        * Outputs:        A std::string containing the JSON response from the server, or an empty
+        * Outputs:        A string containing the JSON response from the server, or an empty
         * string if an error occurred.
         ***********************************************************************************************/
-        std::string fetchDataFromAPI(const std::string& url) 
+        string fetchDataFromAPI(const string& url) 
         {
             CURL* curl;
             CURLcode res;
-            std::string readBuffer;
+            string readBuffer;
 
             // Initialize cURL
             curl_global_init(CURL_GLOBAL_DEFAULT);
@@ -72,7 +74,7 @@ namespace Utils
                 res = curl_easy_perform(curl);
                 if (res != CURLE_OK) 
                 {
-                    std::cerr << "cURL error: " << curl_easy_strerror(res) << std::endl;
+                    cerr << "cURL error: " << curl_easy_strerror(res) << endl;
                     curl_easy_cleanup(curl);
                     curl_global_cleanup();
                     return "";
@@ -91,28 +93,28 @@ namespace Utils
         * Inputs:         jsonResponse - The raw JSON string from the API.
         * Outputs:        None.
         ***********************************************************************************************/
-        void parseWeatherData(const std::string& jsonResponse) 
+        void parseWeatherData(const string& jsonResponse) 
         {
             Json::Value root;
             Json::CharReaderBuilder builder;
-            std::string errs;
+            string errs;
 
-            std::istringstream sstream(jsonResponse);
+            istringstream sstream(jsonResponse);
             if (Json::parseFromStream(builder, sstream, &root, &errs)) 
             {
-                std::string city_name = root["name"].asString();
+                string city_name = root["name"].asString();
                 double temperature = root["main"]["temp"].asDouble();
-                std::string weather_desc = root["weather"][0]["description"].asString();
+                string weather_desc = root["weather"][0]["description"].asString();
                 double humidity = root["main"]["humidity"].asDouble();
                 
-                std::cout << "Weather in " << city_name << ":\n";
-                std::cout << "Temperature: " << temperature << "°C\n";
-                std::cout << "Description: " << weather_desc << "\n";
-                std::cout << "Humidity: " << humidity << "%\n";
+                cout << "Weather in " << city_name << ":\n";
+                cout << "Temperature: " << temperature << "°C\n";
+                cout << "Description: " << weather_desc << "\n";
+                cout << "Humidity: " << humidity << "%\n";
             } 
             else 
             {
-                std::cerr << "Failed to parse the response JSON.\n";
+                cerr << "Failed to parse the response JSON.\n";
             }
         }
 
@@ -120,10 +122,10 @@ namespace Utils
         /***********************************************************************************************
         * Function:       WeatherFetcher (Constructor)
         * Description:    Initializes the WeatherFetcher with the necessary API key.
-        * Inputs:         key - The OpenWeatherMap API key as a std::string.
+        * Inputs:         key - The OpenWeatherMap API key as a string.
         * Outputs:        None.
         ***********************************************************************************************/
-        WeatherFetcher(const std::string& key) : apiKey(key) {}
+        WeatherFetcher(const string& key) : apiKey(key) {}
 
         /***********************************************************************************************
         * Function:       fetchWeatherData (by City Name)
@@ -131,11 +133,11 @@ namespace Utils
         * Inputs:         cityName - The name of the city.
         * Outputs:        None.
         ***********************************************************************************************/
-        void fetchWeatherData(const std::string& cityName) 
+        void fetchWeatherData(const string& cityName) 
         {
-            std::string url = "http://api.openweathermap.org/data/2.5/weather?q=" + cityName +
+            string url = "http://api.openweathermap.org/data/2.5/weather?q=" + cityName +
                             "&appid=" + apiKey + "&units=metric";
-            std::string response = fetchDataFromAPI(url);
+            string response = fetchDataFromAPI(url);
             if (!response.empty()) 
             {
                 parseWeatherData(response);
@@ -151,9 +153,9 @@ namespace Utils
         ***********************************************************************************************/
         void fetchWeatherData(double lat, double lon) 
         {
-            std::string url = "http://api.openweathermap.org/data/2.5/weather?lat=" + std::to_string(lat) +
-                            "&lon=" + std::to_string(lon) + "&appid=" + apiKey + "&units=metric";
-            std::string response = fetchDataFromAPI(url);
+            string url = "http://api.openweathermap.org/data/2.5/weather?lat=" + to_string(lat) +
+                            "&lon=" + to_string(lon) + "&appid=" + apiKey + "&units=metric";
+            string response = fetchDataFromAPI(url);
             if (!response.empty()) 
             {
                 parseWeatherData(response);
@@ -168,9 +170,9 @@ namespace Utils
         ***********************************************************************************************/
         void fetchWeatherData(int pinCode) 
         {
-            std::string url = "http://api.openweathermap.org/data/2.5/weather?zip=" + std::to_string(pinCode) +
+            string url = "http://api.openweathermap.org/data/2.5/weather?zip=" + to_string(pinCode) +
                             "&appid=" + apiKey + "&units=metric";
-            std::string response = fetchDataFromAPI(url);
+            string response = fetchDataFromAPI(url);
             if (!response.empty()) 
             {
                 parseWeatherData(response);
@@ -195,23 +197,23 @@ using namespace Utils;
 
 int main() 
 {
-    std::string apiKey = "bd5e378503939ddaee76f12ad7a97608"; // Replace with your OpenWeather API key
+    string apiKey = "bd5e378503939ddaee76f12ad7a97608"; // Replace with your OpenWeather API key
     WeatherFetcher weatherFetcher(apiKey);
 
     // Example 1: Fetch weather by City Name
-    std::cout << "Fetching weather for city 'London':\n";
+    cout << "Fetching weather for city 'London':\n";
     weatherFetcher.fetchWeatherData("London");
 
-    std::cout << "\n";
+    cout << "\n";
 
     // Example 2: Fetch weather by Coordinates (Latitude and Longitude)
-    std::cout << "Fetching weather for coordinates (Latitude: 51.5074, Longitude: -0.1278):\n";
+    cout << "Fetching weather for coordinates (Latitude: 51.5074, Longitude: -0.1278):\n";
     weatherFetcher.fetchWeatherData(51.5074, -0.1278);
 
-    std::cout << "\n";
+    cout << "\n";
 
     // Example 3: Fetch weather by Postal Code (Pin Code)
-    std::cout << "Fetching weather for Pin Code '94040':\n";
+    cout << "Fetching weather for Pin Code '94040':\n";
     weatherFetcher.fetchWeatherData(94040);
 
     return 0;
