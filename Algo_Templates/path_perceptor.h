@@ -1,24 +1,21 @@
-#ifndef M_PI //Include guard for M_PI
-#define M_PI 3.14159265358979323846
-
-
-namespace Utils
-{
-
-
-    /***************************************************************************************************
+/***************************************************************************************************
     * File:           path_perceptor.cpp (Original: flight_path_smoother.cpp)
     * Description:    This file contains the implementation for the PathSmoother class,
     * which generates a smooth, adaptively sampled flight path from a given set
     * of waypoints. It uses geographic utility functions to calculate distances
     * and bearings on a spherical Earth model, producing more points near the
     * start and end of the journey.
-    ***************************************************************************************************/
+***************************************************************************************************/
+
+#ifndef M_PI //Include guard for M_PI
+#define M_PI 3.14159265358979323846
 
 
-    #include <bits/stdc++.h>
-    using namespace std;
+#include <bits/stdc++.h>
+using namespace std;
 
+namespace Utils
+{
     /***************************************************************************************************
     * Struct:         LatLon
     * Description:    A simple structure to represent a geographic coordinate with latitude and

@@ -1,10 +1,4 @@
-#ifndef COORDINATOR_CPP // Include guard
-#define COORDINATOR_CPP
-
-namespace Utils 
-{
-
-    /***************************************************************************************************
+/***************************************************************************************************
     * File:           Coordinator.cpp (Original: geo_utils.cpp)
     * Description:    This file provides a set of geographic utility functions encapsulated within
     * the GeoUtils class. These functions perform common geodetic calculations
@@ -13,8 +7,16 @@ namespace Utils
     ***************************************************************************************************/
 
 
-    #include <bits/stdc++.h>
-    using namespace std;
+#ifndef COORDINATOR_CPP // Include guard
+#define COORDINATOR_CPP
+
+#include <bits/stdc++.h>
+using namespace std;
+
+namespace Utils 
+{
+
+    
 
     /***************************************************************************************************
     * Struct:         LatLon

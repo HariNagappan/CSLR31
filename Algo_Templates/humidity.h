@@ -1,24 +1,22 @@
-#ifndef HUMIDITY_CPP // Include guard
-#define HUMIDITY_CPP
-
-namespace Utils
-{
-
-
-    /***************************************************************************************************
+/***************************************************************************************************
     * File:           humidity.cpp (Original: flight_safety_full.cpp)
     * Description:    This file provides a comprehensive implementation for flight safety analysis
     * related to weather, specifically humidity and dew point. It includes utility
     * functions for geographic and thermodynamic calculations. The main class,
     * WeatherFlightSafetyEnhanced, recommends safe operational changes (altitude or
     * horizontal position) based on current atmospheric conditions to avoid icing.
-    ***************************************************************************************************/
+***************************************************************************************************/
 
 
+#ifndef HUMIDITY_CPP // Include guard
+#define HUMIDITY_CPP
 
-    #include <bits/stdc++.h>
-    using namespace std;
+#include <bits/stdc++.h>
+using namespace std;
 
+namespace Utils
+{
+    
     /***************************************************************************************************
     * Struct:         LatLon
     * Description:    A simple structure to represent a geographic coordinate with latitude and

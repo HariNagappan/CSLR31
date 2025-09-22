@@ -1,20 +1,22 @@
-#ifndef FLIGHT_PROFILE_CPP // include guard
-#define FLIGHT_PROFILE_CPP
-
-namespace FlightProfile 
-{
-
-    /***************************************************************************************************
+/***************************************************************************************************
     * File:           ascent_and_descent_perceptor.cpp (Original: flight_profile.cpp)
     * Description:    This file implements the FlightProfile class, which generates a simplified
     * averaged flight profile consisting of climb, cruise, and descent phases.
     * It can calculate the aircraft's altitude and speed at any given distance
     * along the flight path and can handle both long and short routes.
-    ***************************************************************************************************/
+***************************************************************************************************/
 
-    #include <bits/stdc++.h>
-    using namespace std;
 
+#ifndef FLIGHT_PROFILE_CPP // include guard
+#define FLIGHT_PROFILE_CPP
+
+#include <bits/stdc++.h>
+using namespace std;
+
+namespace FlightProfile 
+{
+
+    
     /***************************************************************************************************
     * Struct:         ProfilePoint
     * Description:    A data structure to hold the state of an aircraft at a specific point in its

@@ -1,23 +1,24 @@
-#ifndef GRAPH_MAP_CPP // Include guard
-#define GRAPH_MAP_CPP
-
-namespace Matrix 
-{
-
-
-    /***************************************************************************************************
+ /***************************************************************************************************
     * File:           graph_map.cpp
     * Description:    This file contains the implementation of a KeyedMatrix class. This class
     * provides a wrapper around an Eigen::MatrixXd, allowing elements to be
     * accessed and modified using string-based keys instead of integer indices.
     * It also includes a main function to demonstrate its usage.
-    ***************************************************************************************************/
+***************************************************************************************************/
+
+#ifndef GRAPH_MAP_CPP // Include guard
+#define GRAPH_MAP_CPP
+
+#include <Eigen/Dense>
+#include <unordered_map>
+#include <string>
+#include <iostream>
+
+namespace Matrix 
+{
 
 
-    #include <Eigen/Dense>
-    #include <unordered_map>
-    #include <string>
-    #include <iostream>
+   
 
     /***************************************************************************************************
     * Class:          KeyedMatrix

@@ -1,27 +1,23 @@
-
-#ifndef CURL_STATICLIB // Include Guard for static linking
-#define CURL_STATICLIB
-
-
-namespace Utils
-{
-
-
-    /***************************************************************************************************
+/***************************************************************************************************
     * File:           open_weather.cpp
     * Description:    This program fetches current weather data from the OpenWeatherMap API.
     * It uses libcurl for making HTTP requests and jsoncpp for parsing the JSON
     * response. The main class, WeatherFetcher, supports fetching data by city name,
     * geographic coordinates, or postal code.
-    ***************************************************************************************************/
+***************************************************************************************************/
 
-    
-    #include <iostream>
-    #include <string>
-    #include <curl/curl.h>
-    #include <json/json.h>
-    #include <sstream>
 
+#ifndef CURL_STATICLIB // Include Guard for static linking
+#define CURL_STATICLIB
+
+#include <iostream>
+#include <string>
+#include <curl/curl.h>
+#include <json/json.h>
+#include <sstream>
+
+namespace Utils
+{
     /***************************************************************************************************
     * Function:       WriteCallback
     * Description:    A callback function for libcurl to handle incoming data from an HTTP request.
