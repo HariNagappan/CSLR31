@@ -7,8 +7,7 @@
     ***************************************************************************************************/
 
 
-#ifndef COORDINATOR_CPP // Include guard
-#define COORDINATOR_CPP
+#pragma once
 
 #include <bits/stdc++.h>
 using namespace std;
@@ -16,20 +15,18 @@ using namespace std;
 namespace Utils 
 {
 
-    
-
     /***************************************************************************************************
     * Struct:         LatLon
     * Description:    A simple structure to represent a geographic coordinate with latitude and
     * longitude values in degrees.
     ***************************************************************************************************/
-    struct LatLon 
+    typedef struct LatLon
     {
         double lat; // degrees
         double lon; // degrees
         LatLon() : lat(0), lon(0) {}
         LatLon(double lat_, double lon_) : lat(lat_), lon(lon_) {}
-    };
+    }LatLon;
 
     /***************************************************************************************************
     * Class:          GeoUtils
@@ -224,5 +221,3 @@ int main()
 }
 
 */
-
-#endif // COORDINATOR_CPP 

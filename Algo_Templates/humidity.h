@@ -8,8 +8,7 @@
 ***************************************************************************************************/
 
 
-#ifndef HUMIDITY_CPP // Include guard
-#define HUMIDITY_CPP
+#pragma once
 
 #include <bits/stdc++.h>
 using namespace std;
@@ -275,7 +274,7 @@ namespace Utils
                     out.altitude_found = true;
                     out.safe_altitude_m = alt;
                     out.final_margin_c = margin_new;
-                    ostringstream ss; ss << "Found safe altitude above current altitude conserving specific humidity (q). RH at that alt ~ "
+                    stringstream ss; ss << "Found safe altitude above current altitude conserving specific humidity (q). RH at that alt ~ "
                                         << fixed << setprecision(2) << rh_new << " %.";
                     out.note = ss.str();
                     
@@ -298,7 +297,7 @@ namespace Utils
                     out.altitude_found = true;
                     out.safe_altitude_m = alt;
                     out.final_margin_c = margin_new;
-                    ostringstream ss; ss << "Found safe altitude below current altitude conserving specific humidity (q). RH at that alt ~ "
+                    stringstream ss; ss << "Found safe altitude below current altitude conserving specific humidity (q). RH at that alt ~ "
                                         << fixed << setprecision(2) << rh_new << " %.";
                     out.note = ss.str();
                     
@@ -344,7 +343,7 @@ namespace Utils
             out.distance_km = dist_km;
             out.final_margin_c = margin_curr;
             {
-                ostringstream ss;
+                stringstream ss;
                 ss << "Vertical change (conserving specific humidity) up to limits did not achieve safety. "
                 << "Estimated required RH at current location: " << fixed << setprecision(2) << target_rh_percent << " %. "
                 << "Using default horizontal gradient " << assumed_rh_gradient_pct_per_km << " %/km and wind multiplier "
@@ -435,7 +434,7 @@ namespace Utils
                 out.bearing_deg = GeoUtils::bearing_deg(current_loc, samples[driestIdx].loc);
                 
                 {
-                    ostringstream ss;
+                    stringstream ss;
                     ss << "No nearby sample already meets the target RH. Driest sample RH=" << fixed << setprecision(2)
                     << driestRH << " % at distance " << fixed << setprecision(2) << d_to_driest << " km. "
                     << "Estimating required distance to reach target RH by proportional scaling: " << fixed << setprecision(2) << est_dist_km << " km.";
@@ -461,7 +460,7 @@ namespace Utils
             out.horizontal_found = false;
             out.distance_km = dist_km;
             {
-                ostringstream ss;
+                stringstream ss;
                 ss << "No suitable sample found; fallback heuristic used. Estimated horizontal distance: " << fixed << setprecision(2) << dist_km << " km.";
                 out.note = ss.str();
             }
@@ -589,5 +588,3 @@ int main()
 
 */
 
-
-#endif // HUMIDITY_CPP

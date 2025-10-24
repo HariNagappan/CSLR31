@@ -7,8 +7,7 @@
 ***************************************************************************************************/
 
 
-#ifndef CURL_STATICLIB // Include Guard for static linking
-#define CURL_STATICLIB
+#pragma once
 
 #include <iostream>
 #include <string>
@@ -220,5 +219,3 @@ int main()
 }
 
 */
-
-#endif // CURL_STATICLIB

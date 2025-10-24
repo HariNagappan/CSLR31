@@ -6,8 +6,7 @@
     * It also includes a main function to demonstrate its usage.
 ***************************************************************************************************/
 
-#ifndef GRAPH_MAP_CPP // Include guard
-#define GRAPH_MAP_CPP
+#pragma once
 
 #include <Eigen/Dense>
 #include <unordered_map>
@@ -201,5 +200,3 @@ int main()
 }
 
 */
-
-#endif // GRAPH_MAP_CPP

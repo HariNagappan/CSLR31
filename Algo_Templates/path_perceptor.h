@@ -7,8 +7,8 @@
     * start and end of the journey.
 ***************************************************************************************************/
 
-#ifndef PATH_PERCEPTOR //Include guard for M_PI
-#define PATH_PERCEPTOR
+#pragma once
+
 #define M_PI 3.14159265358979323846
 
 #include <Coordinator.h>
@@ -318,5 +318,3 @@ PathSmoother::generatePath(waypoints, p);
 }
 
 */
-
-#endif // M_PI guard

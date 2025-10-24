@@ -7,8 +7,7 @@
 ***************************************************************************************************/
 
 
-#ifndef FLIGHT_PROFILE_CPP // include guard
-#define FLIGHT_PROFILE_CPP
+#pragma once
 
 #include <bits/stdc++.h>
 using namespace std;
@@ -23,13 +22,13 @@ namespace FlightProfile
     * flight profile. It includes altitude, horizontal and vertical speeds, and
     * the current flight phase.
     ***************************************************************************************************/
-    struct ProfilePoint 
+    typedef struct ProfilePoint
     {
         double altitude_m;          // altitude above destination/sea-level (m)
         double horizontal_speed_m_s; // ground/track speed (m/s)
         double vertical_speed_m_s;   // positive for climb, negative for descent (m/s)
         string phase;                // "on-ground", "climb", "cruise", or "descent"
-    };
+    }ProfilePoint;
 
     /***************************************************************************************************
     * Class:          FlightProfile
@@ -401,5 +400,3 @@ int main()
 }
 
 */
-
-#endif // include guard /* FLIGHT_PROFILE_CPP */
