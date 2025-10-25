@@ -107,19 +107,13 @@ private:
             return;
         }
 
-<<<<<<< HEAD:Algo_Templates/approach_detector.h
         stringstream approach_log;
         approach_log << "[!] APPROACH DETECTED at Time: " << static_cast<int>(current_time_s / 60) << " mins\n"
                   << "    - Distance: " << fixed << setprecision(2) << ground_distance_m / 1000.0 << " km\n"
                   << "    - Flight Alt: " << static_cast<int>(flight_state.altitude_m) << " m | Bird Alt: " << static_cast<int>(bird_state.altitude_m) << " m\n"
                   << "    - Angle: " << angle_diff << " degrees\n\n";
         cout << approach_log.str() << endl;
-=======
-        cout << "[!] APPROACH DETECTED at Time: " << static_cast<int>(current_time_s / 60) << " mins\n"
-             << "    - Distance: " << fixed << setprecision(2) << ground_distance_m / 1000.0 << " km\n"
-             << "    - Flight Alt: " << static_cast<int>(flight_state.altitude_m) << " m | Bird Alt: " << static_cast<int>(bird_state.altitude_m) << " m\n"
-             << "    - Angle: " << angle_diff << " degrees\n\n";
->>>>>>> 4f93af94fe58cb1a63162e8cc4550a2aa2ace455:Algo_Templates/ApproachDetector.cpp
+
     }
 
 public:
@@ -244,37 +238,3 @@ public:
     }
 };
 
-// ***************************************************************************************************
-//                                        MAIN FUNCTION
-// ***************************************************************************************************
-<<<<<<< HEAD:Algo_Templates/approach_detector.h
-=======
-int main()
-{
-    try
-    {
-        vector<Utils::LatLon> flight_wps = {
-            {28.5665, 77.1031}, // Delhi Airport
-            {24.0, 75.0},       // Waypoint
-            {19.0896, 72.8656}  // Mumbai Airport
-        };
-
-        vector<Utils::LatLon> bird_wps = {
-            {34.5553, 69.2075}, // Kabul, AF
-            {26.5, 73.0},       // Intersecting region
-            {22.3039, 70.8022}  // Rajkot, IN
-        };
-
-        ApproachDetector detector(40000.0, 500.0, 30.0);
-        detector.initializeFlightPath(flight_wps);
-        detector.initializeBirdPath(bird_wps, 16.7, 2000.0);
-        detector.runSimulation(60.0);
-    }
-    catch (const exception &e)
-    {
-        cerr << "An error occurred: " << e.what() << '\n';
-        return 1;
-    }
-    return 0;
-}
->>>>>>> 4f93af94fe58cb1a63162e8cc4550a2aa2ace455:Algo_Templates/ApproachDetector.cpp
