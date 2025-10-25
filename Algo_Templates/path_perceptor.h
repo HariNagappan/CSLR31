@@ -298,7 +298,12 @@ namespace Utils
         FlightData flightData;
         BirdData birdData;
 
+
     public:
+
+    /*
+    * Add commments Later
+    */
         PathPerceptor(int spd, FlightData fd, BirdData bd)
         {
             speed = spd;
@@ -389,6 +394,43 @@ namespace Utils
             return alternativePath;
         }
     };
+
+    /***************************************************************************************************
+    * Function:       formatWaypoints
+    * Description:    that takes a vector of way points and then prints it in a human-readable format.
+    * Inputs:         waypoints - A vector of LatLon waypoints to format.
+    * title     - An optional title for the waypoint list.
+    * Outputs:        A formatted string representing the waypoint list.
+    ***************************************************************************************************/
+
+    string formatWaypoints(const vector<Utils::LatLon>& waypoints, const string& title = "Waypoint List") 
+    {
+        stringstream WayPointList;
+        
+        
+        WayPointList << fixed << setprecision(6);
+
+        
+        WayPointList << "--- " << title << " ---" << "\n";
+        WayPointList << "Total points: " << waypoints.size() << "\n";
+        WayPointList << "------------------------------------------\n";
+
+        if (waypoints.empty()) WayPointList << "(No waypoints in list)\n";
+        else 
+        {
+            for (size_t i = 0; i < waypoints.size(); ++i) 
+            {
+                WayPointList << "  Point " << std::setw(3) << (i + 1) << ": \t"
+                << waypoints[i].lat << ", \t"
+                << waypoints[i].lon << "\n";
+            }
+        }
+        
+        WayPointList << "------------------------------------------\n";
+
+        return WayPointList.str();
+    }
+
 }
 
 // ***************************************************************************************************
