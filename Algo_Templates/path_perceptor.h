@@ -11,8 +11,7 @@
 
 #define M_PI 3.14159265358979323846
 
-#include <Coordinator.h>
-
+#include "coordinator.h"
 #include <bits/stdc++.h>
 using namespace std;
 
