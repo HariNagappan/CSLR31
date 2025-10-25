@@ -2,6 +2,7 @@
 #include "path_perceptor.h"
 #include "ascent_and_descent_perceptor.h"
 #include "graph_map.h"
+#include "approach_detector.h"
 #include <bits/stdc++.h>
 using namespace std;
 
