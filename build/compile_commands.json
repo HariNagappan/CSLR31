@@ -1,8 +1,0 @@
-[
-{
-  "directory": "/media/souren/Data/Data/NITT/Sem3/Data_Structures/Project/build",
-  "command": "/usr/bin/c++  -I/usr/include/jsoncpp -I/usr/include/eigen3 -I/media/souren/Data/Data/NITT/Sem3/Data_Structures/Project/Algo_Templates -g -std=gnu++17 -o CMakeFiles/FlightOptExec.dir/Algo_Templates/main.cpp.o -c /media/souren/Data/Data/NITT/Sem3/Data_Structures/Project/Algo_Templates/main.cpp",
-  "file": "/media/souren/Data/Data/NITT/Sem3/Data_Structures/Project/Algo_Templates/main.cpp",
-  "output": "CMakeFiles/FlightOptExec.dir/Algo_Templates/main.cpp.o"
-}
-]

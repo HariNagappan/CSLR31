@@ -1,3 +1,0 @@
-/media/souren/Data/Data/NITT/Sem3/Data_Structures/Project/build/CMakeFiles/FlightOptExec.dir
-/media/souren/Data/Data/NITT/Sem3/Data_Structures/Project/build/CMakeFiles/edit_cache.dir
-/media/souren/Data/Data/NITT/Sem3/Data_Structures/Project/build/CMakeFiles/rebuild_cache.dir
