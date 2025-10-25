@@ -128,10 +128,10 @@ namespace Utils
         typedef struct Params 
         {
             double near_radius_km = 50.0;
-            double near_spacing_km = 50.0;
-            double mid_radius_km = 250.0;
-            double mid_spacing_km = 250.0;
-            double far_spacing_km = 500.0;
+            double near_spacing_km = 10.0;
+            double mid_radius_km = 150.0;
+            double mid_spacing_km = 50.0;
+            double far_spacing_km = 250.0;
             double min_spacing_km = 0.1;
         }Params;
 
