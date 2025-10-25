@@ -1,0 +1,6 @@
+{
+    "files.associations": {
+        "regex": "cpp",
+        "chrono": "cpp"
+    }
+}
