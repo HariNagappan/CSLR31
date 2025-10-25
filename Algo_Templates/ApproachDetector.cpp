@@ -106,10 +106,12 @@ private:
             return;
         }
 
-        cout << "[!] APPROACH DETECTED at Time: " << static_cast<int>(current_time_s / 60) << " mins\n"
+        stringstream approach_log;
+        approach_log << "[!] APPROACH DETECTED at Time: " << static_cast<int>(current_time_s / 60) << " mins\n"
                   << "    - Distance: " << fixed << setprecision(2) << ground_distance_m / 1000.0 << " km\n"
                   << "    - Flight Alt: " << static_cast<int>(flight_state.altitude_m) << " m | Bird Alt: " << static_cast<int>(bird_state.altitude_m) << " m\n"
                   << "    - Angle: " << angle_diff << " degrees\n\n";
+        cout << approach_log.str() << endl;
     }
 
 

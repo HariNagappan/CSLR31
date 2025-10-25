@@ -126,7 +126,7 @@ namespace Utils
         * radii and spacing parameters for "near", "mid", and "far" zones relative
         * to the start and destination points.
         ***********************************************************************************************/
-        struct Params 
+        typedef struct Params 
         {
             double near_radius_km = 50.0;
             double near_spacing_km = 50.0;
@@ -134,7 +134,7 @@ namespace Utils
             double mid_spacing_km = 250.0;
             double far_spacing_km = 500.0;
             double min_spacing_km = 0.1;
-        };
+        }Params;
 
         /***********************************************************************************************
         * Function:       generatePath

@@ -148,9 +148,7 @@ namespace Utils
         * angle_deg  - The desired angle of rotation in degrees (clockwise).
         * Outputs:        A pair containing the new coordinate 'E' and the actual computed angle.
         ***********************************************************************************************/
-        static pair<LatLon, double> selectCoordinate(const LatLon &fixed,
-                                                    const LatLon &dest,
-                                                    double angle_deg) 
+        static pair<LatLon, double> selectCoordinate(const LatLon &fixed, const LatLon &dest, double angle_deg) 
         {
             // 1) compute bearing from fixed to dest
             double brFD = bearing(fixed, dest);
